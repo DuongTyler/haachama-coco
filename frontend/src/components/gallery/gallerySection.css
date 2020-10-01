@@ -1,11 +1,21 @@
-.gallery-section {
-    --card-height: 550px;
-    --card-width: var(--card-height);
+.my-masonry-grid {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-left: -15px;
+    /* gutter size offset */
+    width: auto;
+}
 
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
-    grid-gap: 1rem;
-    gap: 1rem;
+.my-masonry-grid_column {
+    padding-left: 15px;
+    /* gutter size */
+    background-clip: padding-box;
+}
+
+/* Style your items */
+.my-masonry-grid_column>div {
+    margin-bottom: 15px;
 }
 
 @media (max-width: 650px) {

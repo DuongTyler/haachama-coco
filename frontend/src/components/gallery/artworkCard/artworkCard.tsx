@@ -66,7 +66,6 @@ class ArtworkCard extends React.Component<ArtworkCardProps, ArtworkCardState> {
     render() {
         const hasLoaded = this.state.loadingState === ImageLoadingState.Loaded;
         const artworkLink = linkToString(this.artwork.artworkLink);
-        const backgroundImage = hasLoaded ? `url("${artworkLink}")` : "none";
 
         return (
             <div className="artwork-card">
