@@ -1,8 +1,9 @@
-import {Message, MessageJson, messageFromJson, messageToJson} from "../models/message";
-import {Artwork, ArtworkJson, artworkFromJson, artworkToJson} from "../models/artwork";
-import {Game, GameJson, gameFromJson, gameToJson} from "../models/game";
+import {Animation, AnimationJson, animationFromJson, animationToJson} from "../models/animation";
 import {Archive, ArchiveJson, archiveFromJson, archiveToJson} from "../models/archive";
+import {Artwork, ArtworkJson, artworkFromJson, artworkToJson} from "../models/artwork";
 import DisplayedLanguage from "../models/language";
+import {Game, GameJson, gameFromJson, gameToJson} from "../models/game";
+import {Message, MessageJson, messageFromJson, messageToJson} from "../models/message";
 
 export default class SessionService {
     private static saveInCache<T>(key: string, object: T): void {
@@ -91,6 +92,16 @@ export default class SessionService {
     public static getArchives(who: string): Archive[] | null {
         let archives = SessionService.getFromCache<ArchiveJson[]>('archives' + who);
         return archives?.map(archiveFromJson) ?? null;
+    }
+
+    public static saveAnimations(animations: Animation[]): void {
+        let json = animations.map(animationToJson);
+        SessionService.saveInCache<AnimationJson[]>('animation', json);
+    }
+
+    public static getAnimations(): Animation[] | null {
+        let animations = SessionService.getFromCache<AnimationJson[]>('animation');
+        return animations?.map(animationFromJson) ?? null;
     }
 
     public static clearCache(): void {
