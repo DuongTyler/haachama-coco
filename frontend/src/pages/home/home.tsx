@@ -1,7 +1,8 @@
 import React from 'react';
-import MessageCardSection from '../../components/messageSection/messageSection';
+import MessageSection from '../../components/messageSection/messageSection';
 import ArchiveSection from '../../components/archiveSection/archiveSection';
 import {Message} from "../../models/message";
+import {Animation} from "../../models/animation";
 import {toRegion} from "../../models/region";
 import ManoAloeService from "../../controllers/mano-aloe.service";
 import SessionService from "../../services/session.service";
@@ -19,6 +20,7 @@ export interface HomePageProps {
 export interface HomePageState {
     loading: boolean;
     messages: Message[];
+    animations: Animation[];
 }
 
 export default class HomePage extends React.Component<HomePageProps, HomePageState> {
@@ -32,25 +34,41 @@ export default class HomePage extends React.Component<HomePageProps, HomePageSta
     state: HomePageState = {
         loading: false,
         messages: [],
+        animations: [],
     }
 
     componentDidMount() {
         this.getData();
     }
 
+
     private getData(): void {
         const cachedMessages: Message[] | null = SessionService.getMessages();
+        const cachedAnimations: Animation[] | null = SessionService.getAnimations();
         if (cachedMessages && cachedMessages.length) {
             this.setState({messages: cachedMessages});
         } else {
             this.setState({loading: true});
             this.manoAloeService.getAllMessages()
                 .then((messages: Message[]) => {
-                    for (let message of messages) {
+                    for (const message of messages) {
                         message.region = toRegion(message.region as string);
                     }
                     SessionService.saveMessages(messages);
                     this.setState({loading: false, messages});
+                })
+                .catch((error: Error) => {
+                    console.error(error);
+                    this.setState({loading: false});
+                })
+        }
+        if (cachedAnimations && cachedAnimations.length) {
+            this.setState({animations: cachedAnimations});
+        } else {
+            this.manoAloeService.getAnimations()
+                .then((animations: Animation[]) => {
+                    SessionService.saveAnimations(animations);
+                    this.setState({loading: false, animations});
                 })
                 .catch((error: Error) => {
                     console.error(error);
@@ -63,7 +81,7 @@ export default class HomePage extends React.Component<HomePageProps, HomePageSta
         return (
             <div>
                 <div className="wrapper-overlay">
-                    {this.state.loading ? <div/> : <MessageCardSection data={this.state.messages}/>}
+                    {this.state.loading ? <div/> : <MessageSection data={this.state.messages}/>}
                 </div>
             </div>
         )
