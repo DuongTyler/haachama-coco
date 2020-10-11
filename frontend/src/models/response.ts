@@ -13,7 +13,7 @@ export interface ArchiveResponse extends BaseResponse {
 }
 
 export interface AnimationResponse extends BaseResponse {
-    archives: AnimationJson[];
+    animations: AnimationJson[];
 }
 
 export interface CountResponse extends BaseResponse {

@@ -1,8 +1,10 @@
-import {Message, messageFromJson} from "../models/message";
-import {CountResponse, GalleryResponse, GamesResponse, MessageResponse, ArchiveResponse} from "../models/response";
-import {Game, gameFromJson} from "../models/game";
-import {Artwork, artworkFromJson} from "../models/artwork";
+import {Animation, animationFromJson} from "../models/animation";
 import {Archive, archiveFromJson} from "../models/archive";
+import {Artwork, artworkFromJson} from "../models/artwork";
+import {Game, gameFromJson} from "../models/game";
+import {Message, messageFromJson} from "../models/message";
+import {AnimationResponse,ArchiveResponse, CountResponse, GalleryResponse, GamesResponse, MessageResponse} from "../models/response";
+
 
 export default class ManoAloeService {
     private readonly apiURL: string;
@@ -100,7 +102,7 @@ export default class ManoAloeService {
     public getGalleryCount(): Promise<number> {
         return this.getCount('gallery');
     }
-    
+
     public getArchive(who: string, archiveID: number): Promise<Archive> {
         return fetch(this.apiURL + 'archives/' + who + '/' + archiveID)
             .then((res: { json: () => any; }) => {
@@ -143,4 +145,18 @@ export default class ManoAloeService {
     public getArchiveCount(who: string): Promise<number> {
         return this.getCount('archives/' + who);
     }
+
+    public getAnimations(): Promise<Animation[]> {
+        return fetch(this.apiURL + 'animations')
+            .then((res: { json: () => any; }) => {
+                return res.json();
+            })
+            .then((apiResponse: AnimationResponse) => {
+                return apiResponse.animations.map(animationFromJson);
+            })
+            .catch((error: Error) => {
+                throw error;
+            })
+    }
+
 }
