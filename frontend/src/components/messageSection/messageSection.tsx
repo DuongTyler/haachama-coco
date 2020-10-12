@@ -26,9 +26,6 @@ export default class MessageSection extends BaseSection<Message> {
         return <MessageCard key={object.messageID} object={object} cardStyleNum={id % CardStyleLength} language={language}/>;
 =======
     renderCard(object: (Message|Animation), cardStyleNum: number, language: DisplayedLanguage, id: number): JSX.Element {
-        if (Object.prototype.toString.call(object) != "[object Message]") {
-            return <MessageCard object={object} cardStyleNum={id % 3} language={language}/>;
-        }
         return <MessageCard object={object} cardStyleNum={id % 3} language={language}/>;
 >>>>>>> hack animations into displaying on MessageSection
     }

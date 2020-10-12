@@ -7,23 +7,18 @@ import {Message} from "../../../models/message";
 import {Animation} from "../../../models/animation";
 import DisplayedLanguage from "../../../models/language";
 import {ReactComponent as TranslateBotan} from "../../../assets/icons/translateIcon.svg";
-import "./messageCard.css";
 import { Twemoji } from 'react-emoji-render';
 import BaseCard, {BaseCardProps, BaseCardState} from "../../../shared/components/baseCard/baseCard";
 import { linkToString } from '../../../models/url';
 
-
-enum ImageLoadingState {
-    NotLoaded,
-    Loading,
-    Loaded,
-}
+import "./messageCard.css";
+import "../../gallery/artworkCard/artworkCard.css";
+import '../../../shared/globalStyles/global.css'
 
 interface MessageCardProps extends BaseCardProps<Message>{
 }
 
 interface MessageCardState extends BaseCardState{
-    loadingState: ImageLoadingState,
 }
 
 function regionCodeToFlag(code: Region): string {
@@ -53,7 +48,6 @@ export default class MessageCard extends BaseCard<(Message|Animation), MessageCa
         this.message = props.object;
         this.flag = regionCodeToFlag(props.object.region);
         this.hasTlMsg = this.message.tl_msg.length > 0;
-
         this.toggleCurrentLanguage = this.toggleCurrentLanguage.bind(this);
     }
     private toggleCurrentLanguage(): void {
@@ -110,21 +104,10 @@ export default class MessageCard extends BaseCard<(Message|Animation), MessageCa
     }
 
     renderAnimation() {
-        const hasLoaded = this.state.loadingState === ImageLoadingState.Loaded;
-        const animationLink = linkToString(this.message.animationLink);
-        const backgroundImage = hasLoaded ? `url("${animationLink}")` : "none";
-
         return (
             <div>
-                <div className="artwork-card-img">
-                    <div className={classNames("placeholder", {
-                        "loaded": hasLoaded,
-                    })}></div>
-                    <div className={classNames("image", {
-                        "loaded": hasLoaded,
-                    })}>
-                        <img src={hasLoaded ? animationLink : ""} alt={this.message.title} />
-                    </div>
+                <div className="message-card-text-container justify-align-center">
+                    <img src={linkToString(this.message.animationLink)} alt={this.message.title} />
                 </div>
                 <div className="artwork-card-footer">
                     <div className="title">{this.message.title}</div>
@@ -135,6 +118,9 @@ export default class MessageCard extends BaseCard<(Message|Animation), MessageCa
     }
 
     render() {
+        if (this.message.messageID == 9999) {
+            return this.renderCard(this.renderAnimation());
+        }
         return this.renderCard(this.renderMessage());
     }
 }
