@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import handleViewport from 'react-in-viewport';
 import {Region} from "../../../models/region";
 import {Message} from "../../../models/message";
+import {Animation} from "../../../models/animation";
 import DisplayedLanguage from "../../../models/language";
 import {ReactComponent as TranslateBotan} from "../../../assets/icons/translateIcon.svg";
 import "./messageCard.css";
@@ -33,8 +34,8 @@ function regionCodeToFlag(code: Region): string {
     return String.fromCodePoint(first, second);
 }
 
-export default class MessageCard extends BaseCard<Message, MessageCardProps, MessageCardState> {
-    private readonly message: Message;
+export default class MessageCard extends BaseCard<(Message|Animation), MessageCardProps, MessageCardState> {
+    private readonly message: (Message|Animation);
     private readonly flag: string;
     private readonly hasTlMsg: boolean;
 

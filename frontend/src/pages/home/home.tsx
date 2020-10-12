@@ -82,6 +82,7 @@ export default class HomePage extends React.Component<HomePageProps, HomePageSta
             <div>
                 <div className="wrapper-overlay">
                     {this.state.loading ? <div/> : <MessageSection data={this.state.messages}/>}
+                    {this.state.loading ? <div/> : <MessageSection data={this.state.animations}/>}
                 </div>
             </div>
         )
