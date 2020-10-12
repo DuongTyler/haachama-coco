@@ -10,11 +10,20 @@ import {ReactComponent as TranslateBotan} from "../../../assets/icons/translateI
 import "./messageCard.css";
 import { Twemoji } from 'react-emoji-render';
 import BaseCard, {BaseCardProps, BaseCardState} from "../../../shared/components/baseCard/baseCard";
+import { linkToString } from '../../../models/url';
+
+
+enum ImageLoadingState {
+    NotLoaded,
+    Loading,
+    Loaded,
+}
 
 interface MessageCardProps extends BaseCardProps<Message>{
 }
 
 interface MessageCardState extends BaseCardState{
+    loadingState: ImageLoadingState,
 }
 
 function regionCodeToFlag(code: Region): string {
@@ -96,6 +105,31 @@ export default class MessageCard extends BaseCard<(Message|Animation), MessageCa
                 {this.hasTlMsg &&
                 <TranslateBotan className="message-card-translate" onMouseDown={this.toggleCurrentLanguage} />
                 }
+            </div>
+        )
+    }
+
+    renderAnimation() {
+        const hasLoaded = this.state.loadingState === ImageLoadingState.Loaded;
+        const animationLink = linkToString(this.message.animationLink);
+        const backgroundImage = hasLoaded ? `url("${animationLink}")` : "none";
+
+        return (
+            <div>
+                <div className="artwork-card-img">
+                    <div className={classNames("placeholder", {
+                        "loaded": hasLoaded,
+                    })}></div>
+                    <div className={classNames("image", {
+                        "loaded": hasLoaded,
+                    })}>
+                        <img src={hasLoaded ? animationLink : ""} alt={this.message.title} />
+                    </div>
+                </div>
+                <div className="artwork-card-footer">
+                    <div className="title">{this.message.title}</div>
+                    <div className="artist"><a href={linkToString(this.message.artistLink)}>{this.message.username}</a></div>
+                </div>
             </div>
         )
     }
