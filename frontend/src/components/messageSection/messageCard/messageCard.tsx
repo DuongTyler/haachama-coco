@@ -118,6 +118,7 @@ export default class MessageCard extends BaseCard<(Message|Animation), MessageCa
     }
 
     render() {
+        // TODO: Fix this bad logic, retriving message.constructor.name gives Object
         if (this.message.messageID == 9999) {
             return this.renderCard(this.renderAnimation());
         }

@@ -42,6 +42,7 @@ export default class HomePage extends React.Component<HomePageProps, HomePageSta
     }
 
 
+
     private getData(): void {
         const cachedMessages: Message[] | null = SessionService.getMessages();
         const cachedAnimations: Animation[] | null = SessionService.getAnimations();
@@ -65,6 +66,7 @@ export default class HomePage extends React.Component<HomePageProps, HomePageSta
         if (cachedAnimations && cachedAnimations.length) {
             this.setState({animations: cachedAnimations});
         } else {
+            this.setState({loading: true});
             this.manoAloeService.getAnimations()
                 .then((animations: Animation[]) => {
                     SessionService.saveAnimations(animations);
