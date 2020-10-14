@@ -1,26 +1,21 @@
 import { stringToLink, linkToString, ExternalLink } from "./url";
-import {Region, toRegion} from "./region";
+import { Region, toRegion } from "./region";
+import { Content, ContentJson } from "./content"
 
-export interface Message {
+export interface Message extends Content {
     messageID: number;
     orig_msg: string;
     tl_msg: string;
     region: Region;
     username: string;
-    animationLink: ExternalLink;
-    artistLink: ExternalLink;
-    title: string;
 }
 
-export interface MessageJson {
+export interface MessageJson extends ContentJson{
     messageID: number;
     orig_msg: string;
     tl_msg: string;
     region: string;
     username: string;
-    animationLink: ExternalLink;
-    artistLink: ExternalLink;
-    title: string;
 }
 
 export function messageFromJson(json: MessageJson): Message {
@@ -29,19 +24,13 @@ export function messageFromJson(json: MessageJson): Message {
         orig_msg,
         tl_msg,
         region,
-        username,
-        animationLink=stringToLink("about:blank"),
-        artistLink=stringToLink("about:blank"),
-        title="" } = json;
+        username} = json;
     return {
         messageID,
         orig_msg,
         tl_msg,
         region: toRegion(region),
         username,
-        animationLink,
-        title,
-        artistLink,
     }
 }
 
@@ -51,18 +40,12 @@ export function messageToJson(message: Message): MessageJson {
         orig_msg,
         tl_msg,
         region,
-        username,
-        animationLink=stringToLink("about:blank"),
-        artistLink=stringToLink("about:blank"),
-        title="" } = message;
+        username} = message;
     return {
         messageID,
         orig_msg,
         tl_msg,
         region: region as string,
         username,
-        animationLink,
-        title,
-        artistLink,
     }
 }

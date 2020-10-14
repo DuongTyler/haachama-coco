@@ -9,13 +9,14 @@ import DisplayedLanguage from "../../../models/language";
 import {ReactComponent as TranslateBotan} from "../../../assets/icons/translateIcon.svg";
 import { Twemoji } from 'react-emoji-render';
 import BaseCard, {BaseCardProps, BaseCardState} from "../../../shared/components/baseCard/baseCard";
-import { linkToString } from '../../../models/url';
+import { ExternalLink, linkToString, stringToLink } from '../../../models/url';
+import { Content } from '../../../models/content';
 
 import "./messageCard.css";
 import "../../gallery/artworkCard/artworkCard.css";
 import '../../../shared/globalStyles/global.css'
 
-interface MessageCardProps extends BaseCardProps<Message>{
+interface MessageCardProps extends BaseCardProps<(Content)>{
 }
 
 interface MessageCardState extends BaseCardState{
@@ -38,16 +39,25 @@ function regionCodeToFlag(code: Region): string {
     return String.fromCodePoint(first, second);
 }
 
-export default class MessageCard extends BaseCard<(Message|Animation), MessageCardProps, MessageCardState> {
-    private readonly message: (Message|Animation);
+export default class MessageCard extends BaseCard<Content, MessageCardProps, MessageCardState> {
+    private readonly message: Content;
     private readonly flag: string;
     private readonly hasTlMsg: boolean;
 
     constructor(props: MessageCardProps) {
         super(props);
         this.message = props.object;
-        this.flag = regionCodeToFlag(props.object.region);
-        this.hasTlMsg = this.message.tl_msg.length > 0;
+        if (props.object.region != undefined) {
+            this.flag = regionCodeToFlag(props.object.region);
+        } else {
+            // TODO: Remove temp value
+            this.flag = regionCodeToFlag("AQ");
+        }
+        if (this.message.tl_msg != undefined) {
+            this.hasTlMsg = this.message.tl_msg.length > 0;
+        } else {
+            this.hasTlMsg = false;
+        }
         this.toggleCurrentLanguage = this.toggleCurrentLanguage.bind(this);
     }
     private toggleCurrentLanguage(): void {
@@ -104,14 +114,27 @@ export default class MessageCard extends BaseCard<(Message|Animation), MessageCa
     }
 
     renderAnimation() {
+        // TODO: Can I get rid of this?
+        let animationUrl: ExternalLink;
+        let artistUrl: ExternalLink;
+        if (this.message.animationLink == undefined) {
+            animationUrl = stringToLink("about:blank");
+        } else {
+            animationUrl = this.message.animationLink;
+        }
+        if (this.message.artistLink == undefined) {
+            artistUrl = stringToLink("about:blank");
+        } else {
+            artistUrl = this.message.artistLink;
+        }
         return (
             <div>
                 <div className="message-card-text-container justify-align-center">
-                    <img src={linkToString(this.message.animationLink)} alt={this.message.title} />
+                    <img src={linkToString(animationUrl)} alt={this.message.title} />
                 </div>
                 <div className="artwork-card-footer">
                     <div className="title">{this.message.title}</div>
-                    <div className="artist"><a href={linkToString(this.message.artistLink)}>{this.message.username}</a></div>
+                    <div className="artist"><a href={linkToString(artistUrl)}>{this.message.username}</a></div>
                 </div>
             </div>
         )

@@ -1,28 +1,21 @@
 import { stringToLink, linkToString, ExternalLink } from "./url";
 import { toRegion, Region } from "./region";
+import { Content, ContentJson } from "./content"
 
-export interface Animation {
+export interface Animation extends Content {
     animationID: number;
     animationLink: ExternalLink;
     artistLink: ExternalLink;
     username: string;
     title: string;
-    messageID: number;
-    orig_msg: string;
-    tl_msg: string;
-    region: Region;
 }
 
-export interface AnimationJson {
+export interface AnimationJson extends ContentJson{
     animationID: number;
     animationLink: string;
     artistLink: string;
     username: string;
     title: string;
-    messageID: number;
-    orig_msg: string;
-    tl_msg: string;
-    region: Region;
 }
 
 export function animationFromJson(json: AnimationJson): Animation {
@@ -32,10 +25,7 @@ export function animationFromJson(json: AnimationJson): Animation {
         artistLink,
         username,
         title,
-        messageID=9999,
-        orig_msg="falsy msg",
-        tl_msg="falsy msg",
-        region=toRegion("AQ") } = json;
+        messageID=9999} = json;
     return {
         animationID,
         animationLink: stringToLink(animationLink),
@@ -43,9 +33,6 @@ export function animationFromJson(json: AnimationJson): Animation {
         username,
         title,
         messageID,
-        orig_msg,
-        tl_msg,
-        region,
     }
 }
 
@@ -56,10 +43,7 @@ export function animationToJson(animation: Animation): AnimationJson {
         artistLink,
         username,
         title,
-        messageID=9999,
-        orig_msg="falsy msg",
-        tl_msg="falsy msg",
-        region=toRegion("AQ") } = animation;
+        messageID=9999} = animation;
     return {
         animationID,
         animationLink: linkToString(animationLink),
@@ -67,8 +51,5 @@ export function animationToJson(animation: Animation): AnimationJson {
         username,
         title,
         messageID,
-        orig_msg,
-        tl_msg,
-        region,
     }
 }
