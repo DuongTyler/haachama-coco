@@ -1,7 +1,5 @@
 import React from "react";
-import CSS from "csstype";
 
-import SessionService from "../../services/session.service";
 import ManoAloeService from "../../controllers/mano-aloe.service";
 import {Archive, archiveFromJson, ArchiveJson} from "../../models/archive";
 import "./archiveSection.css";

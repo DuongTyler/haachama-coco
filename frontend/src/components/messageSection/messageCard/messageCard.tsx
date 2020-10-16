@@ -1,7 +1,5 @@
 import React from "react";
-import CSS from 'csstype';
 import classNames from 'classnames';
-import handleViewport from 'react-in-viewport';
 import {Region} from "../../../models/region";
 import {Message} from "../../../models/message";
 import DisplayedLanguage from "../../../models/language";

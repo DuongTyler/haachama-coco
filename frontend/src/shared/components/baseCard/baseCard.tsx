@@ -5,7 +5,6 @@ import CSS from "csstype";
 import CardStyle1 from "../../../assets/cards/fake_card.svg";
 import CardStyle2 from "../../../assets/cards/fake_card.svg";
 import './baseCard.css';
-import handleViewport from "react-in-viewport";
 import VisibilitySensor from "react-visibility-sensor";
 
 // TODO(#32): Change this to a class prop so inheriting classes can override it

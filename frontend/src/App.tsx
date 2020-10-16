@@ -20,7 +20,7 @@ interface AppProps {
 
 const AltNav = () => {
     const location = useLocation();
-    if (location.pathname == "/home") {
+    if (location.pathname === "/home") {
         return <InPageNav />;
     }
     return <span />
